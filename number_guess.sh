@@ -28,10 +28,16 @@ GAME() {
   SECRET_NUMBER=$((RANDOM % 1000 +1))
   echo $SECRET_NUMBER
   #initial user input
-  echo "Guess the secret number between 1 and 1000:"
+  echo -e "\nGuess the secret number between 1 and 1000:"
+  NUMBER_OF_GUESSES=0
   read USER_GUESS
+
+  #basic game logic
   while [ $NUMBER_FOUND != true ]
   do
+    #increment guesses
+    ((NUMBER_OF_GUESSES++))
+
     #check input if it is an integer or higher/lower than secret number
     if ! [[ "$USER_GUESS" =~ ^-?[0-9]+$ ]]; then
       echo -e "\nThat is not an integer, guess again:" 
@@ -49,7 +55,10 @@ GAME() {
     fi
   done
 
-  echo -e "\nYou guessed it in <number_of_guesses> tries. The secret number was <secret_number>. Nice job!"
+  #game finished statement
+  echo -e "\nYou guessed it in $NUMBER_OF_GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
+
+
 
 
 
