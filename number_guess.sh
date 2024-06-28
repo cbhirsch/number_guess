@@ -15,7 +15,12 @@ GAME() {
     echo -e "\nWelcome, $USER_NAME! It looks like this is your first time here."
 
   else
-    echo -e "\nWelcome back, $USER_NAME! You have played <games_played> games, and your best game took <best_game> guesses"
+    #get user info
+    USER_INFO=$($PSQL "SELECT games_played, best_game FROM users WHERE username='$USER_NAME'")
+    echo $USER_INFO | while IFS='|' read GAMES_PLAYED BEST_GAME
+    do 
+      echo -e "\nWelcome back, $USER_NAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses"
+    done
   fi
 
   #generate random number between 1-1000
