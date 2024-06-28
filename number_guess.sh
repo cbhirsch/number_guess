@@ -19,13 +19,37 @@ GAME() {
     USER_INFO=$($PSQL "SELECT games_played, best_game FROM users WHERE username='$USER_NAME'")
     echo $USER_INFO | while IFS='|' read GAMES_PLAYED BEST_GAME
     do 
-      echo -e "\nWelcome back, $USER_NAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses"
+      echo -e "\nWelcome back, $USER_NAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
     done
   fi
-
+  #initialize variable guessed_number
+  NUMBER_FOUND=false
   #generate random number between 1-1000
-  NUMBER=$((RANDOM % 1000 +1))
-  echo $NUMBER
+  SECRET_NUMBER=$((RANDOM % 1000 +1))
+  echo $SECRET_NUMBER
+  #initial user input
+  echo "Guess the secret number between 1 and 1000:"
+  read USER_GUESS
+  while [ $NUMBER_FOUND != true ]
+  do
+    #check input if it is an integer or higher/lower than secret number
+    if ! [[ "$USER_GUESS" =~ ^-?[0-9]+$ ]]; then
+      echo -e "\nThat is not an integer, guess again:" 
+      read USER_GUESS
+    elif [ $SECRET_NUMBER -lt $USER_GUESS ]
+    then
+      echo -e "\nIt's lower than that, guess again:" 
+      read USER_GUESS
+    elif [ $SECRET_NUMBER -gt $USER_GUESS ]
+    then
+      echo -e "\nIt's higher than that, guess again:" 
+      read USER_GUESS
+    else
+      NUMBER_FOUND=true
+    fi
+  done
+
+  echo -e "\nYou guessed it in <number_of_guesses> tries. The secret number was <secret_number>. Nice job!"
 
 
 
