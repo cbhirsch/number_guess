@@ -23,7 +23,7 @@ GAME() {
     #get user info
     BEST_GAME=$($PSQL "SELECT best_game FROM game_info WHERE user_id='$USER_ID'")
     GAMES_PLAYED=$($PSQL "SELECT games_played FROM game_info WHERE user_id='$USER_ID'")
-    echo -e "Welcome back, $USER_NAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
+    echo "Welcome back, $USER_NAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 
   fi
   #initialize variable guessed_number
@@ -38,9 +38,6 @@ GAME() {
   #basic game logic
   while [ $NUMBER_FOUND != true ]
   do
-    #increment guesses
-    ((NUMBER_OF_GUESSES++))
-
     #check input if it is an integer or higher/lower than secret number
     if ! [[ "$USER_GUESS" =~ ^-?[0-9]+$ ]]; then
       echo -e "\nThat is not an integer, guess again:" 
@@ -49,10 +46,14 @@ GAME() {
     then
       echo -e "\nIt's lower than that, guess again:" 
       read USER_GUESS
+      #increment guesses
+      ((NUMBER_OF_GUESSES++))
     elif [ $SECRET_NUMBER -gt $USER_GUESS ]
     then
       echo -e "\nIt's higher than that, guess again:" 
       read USER_GUESS
+      #increment guesses
+      ((NUMBER_OF_GUESSES++))
     else
       NUMBER_FOUND=true
     fi
@@ -83,15 +84,8 @@ GAME() {
     UPDATE_GAME_INFO=$($PSQL "UPDATE game_info SET games_played=$GAMES_PLAYED,best_game=$BEST_GAME WHERE game_info_id=$GAME_INFO_ID")
 
   fi
-
-
   #game finished statement
   echo -e "\nYou guessed it in $NUMBER_OF_GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
-
-
-
-
-
 
 }
 GAME
