@@ -23,7 +23,7 @@ GAME() {
     #get user info
     BEST_GAME=$($PSQL "SELECT best_game FROM game_info WHERE user_id='$USER_ID'")
     GAMES_PLAYED=$($PSQL "SELECT games_played FROM game_info WHERE user_id='$USER_ID'")
-    echo -e "\nWelcome back, $USER_NAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
+    echo -e "Welcome back, $USER_NAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 
   fi
   #initialize variable guessed_number
