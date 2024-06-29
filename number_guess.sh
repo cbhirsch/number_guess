@@ -8,18 +8,18 @@ echo -e "\nEnter your username:"
 read USER_INPUT
 
 #check for username
-USER_NAME=$($PSQL "SELECT username FROM users WHERE username='$USER_INPUT'")
-if [[ -z $USER_NAME ]]
+USERNAME=$($PSQL "SELECT username FROM users WHERE username='$USER_INPUT'")
+if [[ -z $USERNAME ]]
 then
-  USER_NAME=$USER_INPUT
-  echo -e "\nWelcome, $USER_NAME! It looks like this is your first time here."
-  INPUT_USER=$($PSQL "INSERT INTO users(username) VALUES('$USER_NAME')")
+  USERNAME=$USER_INPUT
+  echo -e "\nWelcome, $USERNAME! It looks like this is your first time here."
+  INPUT_USER=$($PSQL "INSERT INTO users(username) VALUES('$USERNAME')")
   #get user_id
-  USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USER_NAME'")
+  USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME'")
 
 else
   #get user_id
-  USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USER_NAME'")
+  USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME'")
   #get user info
   BEST_GAME=$($PSQL "SELECT MIN(guesses) FROM games WHERE user_id='$USER_ID'")
   GAMES_PLAYED=$($PSQL "SELECT COUNT(*) FROM games WHERE user_id='$USER_ID'")
